@@ -1,0 +1,24 @@
+---
+dist: trusty
+
+language: go
+go:
+  - 1.8.3
+
+script:
+  - go test -v
+  - GOOS=linux go build -o url-parser-Linux-x86_64
+  - GOOS=darwin go build -o url-parser-Darwin-x86_64
+  - GOOS=windows go build -o url-parser-Windows-x86_64.exe
+
+deploy:
+  provider: releases
+  overwrite: true
+  skip_cleanup: true
+  on:
+    tags: true
+  api_key: $GITHUB_OAUTH_TOKEN
+  file:
+    - url-parser-Linux-x86_64
+    - url-parser-Darwin-x86_64
+    - url-parser-Windows-x86_64.exe

@@ -4,6 +4,7 @@ import (
 	"flag"
 	"fmt"
 	"net/url"
+	"os"
 	"strings"
 )
 
@@ -69,6 +70,14 @@ func parse(urlString string, part uint, pathIndex uint, queryField string) strin
 	return result
 }
 
+func usage() {
+	appName := os.Args[0]
+	fmt.Fprintf(os.Stderr, "Usage of %s:\n", appName)
+	fmt.Fprintf(os.Stderr, "\t%s [flags] some_url\n", appName)
+	fmt.Fprintf(os.Stderr, "Flags:\n")
+	flag.PrintDefaults()
+}
+
 func main() {
 	schemePtr := flag.Bool("scheme", false, "show the scheme part")
 	userPtr := flag.Bool("user", false, "show the user part")
@@ -81,6 +90,7 @@ func main() {
 	pathIndexPtr := flag.Uint("path-index", 0, "filter parsed path by index")
 	queryFieldPtr := flag.String("query-field", "", "filter parsed query by field name")
 
+	flag.Usage = usage
 	flag.Parse()
 
 	urlString := flag.Args()[0]
