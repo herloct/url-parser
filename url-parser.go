@@ -1,6 +1,7 @@
 package main
 
 import (
+	"errors"
 	"flag"
 	"fmt"
 	"net/url"
@@ -35,6 +36,7 @@ func parse(urlString string, part uint, pathIndex uint, queryField string) strin
 		if url.User != nil {
 			result = url.User.Username()
 		}
+
 	case PASSWORD_PART:
 		if url.User == nil {
 			break
@@ -57,6 +59,7 @@ func parse(urlString string, part uint, pathIndex uint, queryField string) strin
 			paths := strings.Split(result, "/")
 			result = paths[pathIndex]
 		}
+
 	case QUERY_PART:
 		result = url.RawQuery
 		if queryField != "" && result != "" {
@@ -71,7 +74,7 @@ func parse(urlString string, part uint, pathIndex uint, queryField string) strin
 }
 
 func usage() {
-	appName := os.Args[0]
+	appName := "url-parser"
 	fmt.Fprintf(os.Stderr, "Usage of %s:\n", appName)
 	fmt.Fprintf(os.Stderr, "\t%s [flags] some_url\n", appName)
 	fmt.Fprintf(os.Stderr, "Flags:\n")
@@ -79,6 +82,8 @@ func usage() {
 }
 
 func main() {
+	flag.Usage = usage
+
 	schemePtr := flag.Bool("scheme", false, "show the scheme part")
 	userPtr := flag.Bool("user", false, "show the user part")
 	passwordPtr := flag.Bool("password", false, "show the password part")
@@ -90,9 +95,12 @@ func main() {
 	pathIndexPtr := flag.Uint("path-index", 0, "filter parsed path by index")
 	queryFieldPtr := flag.String("query-field", "", "filter parsed query by field name")
 
-	flag.Usage = usage
 	flag.Parse()
 
+	if len(flag.Args()) < 1 {
+		err := errors.New("Please provide an URL to parse")
+		panic(err)
+	}
 	urlString := flag.Args()[0]
 	part := ALL_PART
 	pathIndex := uint(0)
