@@ -1,4 +1,4 @@
-# url-parser
+# url-parser [![Build Status](https://travis-ci.org/herloct/url-parser.svg?branch=master)](https://travis-ci.org/herloct/url-parser)
 
 Inspired by [urlp](https://github.com/clayallsopp/urlp), a simple command-line utility for parsing URLs.
 
@@ -44,22 +44,24 @@ https://github.com/herloct/url-parser/releases/download/1.0.0-beta1/url-parser-W
 ```bash
 $ url-parser --help
 Usage of url-parser:
+        url-parser [flags] some_url
+Flags:
   -hostname
-    	show the hostname part
+        show the hostname part
   -password
-    	show the password part
+        show the password part
   -path
-    	show the raw path part
+        show the raw path part
   -path-index uint
-    	filter parsed path by index
+        filter parsed path by index
   -port
-    	show the port part
+        show the port part
   -query
-    	show the raw query string part
+        show the raw query string part
   -query-field string
-    	filter parsed query by field name
+        filter parsed query by field name
   -scheme
-    	show the scheme part
+        show the scheme part
   -user
-    	show the user part
+        show the user part
 ```
