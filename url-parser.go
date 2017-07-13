@@ -71,7 +71,7 @@ func parse(urlString string, part uint, pathIndex uint, queryField string) strin
 }
 
 func usage() {
-	appName := os.Args[0]
+	appName := "url-parser"
 	fmt.Fprintf(os.Stderr, "Usage of %s:\n", appName)
 	fmt.Fprintf(os.Stderr, "\t%s [flags] some_url\n", appName)
 	fmt.Fprintf(os.Stderr, "Flags:\n")
