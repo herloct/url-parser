@@ -33,6 +33,12 @@ curl -L https://github.com/herloct/url-parser/releases/download/1.0.0-beta1/url-
 
 ```
 
+For Windows, you could download them here:
+
+```curl
+https://github.com/herloct/url-parser/releases/download/1.0.0-beta1/url-parser-Windows-x86_64
+```
+
 ## Usage
 
 ```bash
