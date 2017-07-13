@@ -5,15 +5,18 @@ language: go
 go:
   - 1.8.3
 
-cache:
-  directories:
-    - build
+before_install:
+  - sudo apt update -qq
+  - sudo apt install -y upx
 
 script:
   - go test -v
   - GOOS=linux go build -ldflags '-s -w' -o build/url-parser-Linux-x86_64
   - GOOS=darwin go build -ldflags '-s -w' -o build/url-parser-Darwin-x86_64
   - GOOS=windows go build -ldflags '-s -w' -o build/url-parser-Windows-x86_64.exe
+  - upx --force-brute build/url-parser-Linux-x86_64
+  - upx --force-brute build/url-parser-Darwin-x86_64
+  - upx --force-brute build/url-parser-Windows-x86_64.exe
 
 deploy:
   provider: releases
