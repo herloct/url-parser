@@ -14,9 +14,9 @@ script:
   - GOOS=linux go build -ldflags '-s -w' -o build/url-parser-Linux-x86_64
   - GOOS=darwin go build -ldflags '-s -w' -o build/url-parser-Darwin-x86_64
   - GOOS=windows go build -ldflags '-s -w' -o build/url-parser-Windows-x86_64.exe
-  - upx --force-brute build/url-parser-Linux-x86_64
-  - upx --force-brute build/url-parser-Darwin-x86_64
-  - upx --force-brute build/url-parser-Windows-x86_64.exe
+  - upx --ultra-brute build/url-parser-Linux-x86_64
+  - upx --ultra-brute build/url-parser-Darwin-x86_64
+  - upx --ultra-brute build/url-parser-Windows-x86_64.exe
 
 deploy:
   provider: releases
