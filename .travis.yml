@@ -1,0 +1,13 @@
+---
+language: go
+go:
+  - 1.8.3
+  - master
+
+jobs:
+  fast_finish: true
+  allow_failures:
+    - master
+  include:
+    - stage: test
+      script: go test -v
