@@ -36,8 +36,8 @@ curl -L https://github.com/herloct/url-parser/releases/download/1.0.0-beta1/url-
 ## Usage
 
 ```bash
-$ uri-parser --help
-Usage of uri-parser:
+$ url-parser --help
+Usage of url-parser:
   -hostname
     	show the hostname part
   -password
