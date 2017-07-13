@@ -29,7 +29,7 @@ somevalue
 url-parser is available for Linux and OS X, 64-bit only for now:
 
 ```curl
-curl -L https://github.com/herloct/url-parser/releases/download/1.0.0-beta1/url-parser-`uname -s`-x86_64 > /usr/local/bin/url-parser; chmod +x /usr/local/bin/urlp
+curl -L https://github.com/herloct/url-parser/releases/download/1.0.0-beta1/url-parser-`uname -s`-x86_64 > /usr/local/bin/url-parser; chmod +x /usr/local/bin/url-parser
 
 ```
 
