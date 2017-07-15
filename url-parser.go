@@ -55,6 +55,9 @@ func parse(urlString string, part string, index int, field string) (string, erro
 			result = url.Query().Get(field)
 		}
 
+	case "fragment":
+		result = url.Fragment
+
 	case "all":
 		result = urlString
 
@@ -76,7 +79,7 @@ func usage() {
 	fmt.Fprintln(os.Stderr, "Options:")
 	fmt.Fprintln(os.Stderr, "  --part=PART          Part of URL to show [default: all].")
 	fmt.Fprintln(os.Stderr, "                       Valid values: all, scheme, user, password,")
-	fmt.Fprintln(os.Stderr, "                       hostname, port, path, or query.")
+	fmt.Fprintln(os.Stderr, "                       hostname, port, path, query, or fragment.")
 	fmt.Fprintln(os.Stderr, "  --path-index=INDEX   Filter parsed path by index.")
 	fmt.Fprintln(os.Stderr, "  --query-field=FIELD  Filter parsed query string by field name.")
 }

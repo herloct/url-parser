@@ -54,7 +54,7 @@ Usage:
 Options:
   --part=PART          Part of URL to show [default: all].
                        Valid values: all, scheme, user, password,
-                       hostname, port, path, or query.
+                       hostname, port, path, query, or fragment.
   --path-index=INDEX   Filter parsed path by index.
   --query-field=FIELD  Filter parsed query string by field name.
 ```

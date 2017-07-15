@@ -13,7 +13,7 @@ type TestParseData struct {
 }
 
 func TestParse(t *testing.T) {
-	urlString := "postgres://user:pass@host.com:5432/path/to?key=value&other=other%20value#f"
+	urlString := "postgres://user:pass@host.com:5432/path/to?key=value&other=other%20value#some-fragment"
 
 	testDatas := []TestParseData{
 		TestParseData{
@@ -127,6 +127,17 @@ func TestParse(t *testing.T) {
 			urlString: "postgres://host.com",
 			part:      "query",
 			field:     "key",
+			expected:  "",
+		},
+
+		TestParseData{
+			urlString: urlString,
+			part:      "fragment",
+			expected:  "some-fragment",
+		},
+		TestParseData{
+			urlString: "postgres://host.com",
+			part:      "fragment",
 			expected:  "",
 		},
 	}
