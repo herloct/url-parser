@@ -13,6 +13,11 @@ before_install:
 
 script:
   - go test -v
+  - go build -ldflags '-s -w'
+  - upx --ultra-brute url-parser
+  - mv url-parser url-parser-`uname -s`-x86_64
+  - ls -la
+
 #  - GOOS=linux go build -ldflags '-s -w' -o build/url-parser-Linux-x86_64
 #  - GOOS=darwin go build -ldflags '-s -w' -o build/url-parser-Darwin-x86_64
 #  - GOOS=windows go build -ldflags '-s -w' -o build/url-parser-Windows-x86_64.exe
