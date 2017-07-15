@@ -16,6 +16,8 @@ script:
   - go build -ldflags '-s -w'
   - upx --ultra-brute url-parser
 
+  - ./url-parser --help
+
   - ./url-parser || echo "This should be failed"
 
   - '[[ $(./url-parser "https://google.com") == "https://google.com" ]]'
