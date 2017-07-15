@@ -5,7 +5,6 @@ import (
 	"flag"
 	"fmt"
 	"net/url"
-	"os"
 	"strings"
 )
 
@@ -70,18 +69,18 @@ func parse(urlString string, part string, index int, field string) (string, erro
 
 func usage() {
 	appName := "url-parser"
-	fmt.Fprintf(os.Stderr, "%s\n", appName)
-	fmt.Fprintf(os.Stderr, "  Parse URL and shows the part of it.\n\n")
-	fmt.Fprintln(os.Stderr, "Usage:")
-	fmt.Fprintf(os.Stderr, "  %s --part=PART <url>\n", appName)
-	fmt.Fprintf(os.Stderr, "  %s --part=path [--path-index=INDEX] <url>\n", appName)
-	fmt.Fprintf(os.Stderr, "  %s --part=query [--query-field=FIELD] <url>\n\n", appName)
-	fmt.Fprintln(os.Stderr, "Options:")
-	fmt.Fprintln(os.Stderr, "  --part=PART          Part of URL to show [default: all].")
-	fmt.Fprintln(os.Stderr, "                       Valid values: all, scheme, user, password,")
-	fmt.Fprintln(os.Stderr, "                       hostname, port, path, query, or fragment.")
-	fmt.Fprintln(os.Stderr, "  --path-index=INDEX   Filter parsed path by index.")
-	fmt.Fprintln(os.Stderr, "  --query-field=FIELD  Filter parsed query string by field name.")
+	fmt.Printf("%s\n", appName)
+	fmt.Printf("  Parse URL and shows the part of it.\n\n")
+	fmt.Println("Usage:")
+	fmt.Printf("  %s --part=PART <url>\n", appName)
+	fmt.Printf("  %s --part=path [--path-index=INDEX] <url>\n", appName)
+	fmt.Printf("  %s --part=query [--query-field=FIELD] <url>\n\n", appName)
+	fmt.Println("Options:")
+	fmt.Println("  --part=PART          Part of URL to show [default: all].")
+	fmt.Println("                       Valid values: all, scheme, user, password,")
+	fmt.Println("                       hostname, port, path, query, or fragment.")
+	fmt.Println("  --path-index=INDEX   Filter parsed path by index.")
+	fmt.Println("  --query-field=FIELD  Filter parsed query string by field name.")
 }
 
 func main() {
