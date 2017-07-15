@@ -5,22 +5,22 @@ Inspired by [urlp](https://github.com/clayallsopp/urlp), a simple command-line u
 Implemented in Go, using standard library.
 
 ```bash
-$ url-parser -host https://somedomain.com
+$ url-parser --part=host https://somedomain.com
 somedomain.com
 
-$ url-parser -user https://herloct@somedomain.com
+$ url-parser --part=user https://herloct@somedomain.com
 herloct
 
-$ url-parser -path https://somedomain.com/path/to
+$ url-parser --part=path https://somedomain.com/path/to
 /path/to
 
-$ url-parser -path -path-index=1 https://somedomain.com/path/to
+$ url-parser --part=path --path-index=1 https://somedomain.com/path/to
 to
 
-$ url-parser -query https://somedomain.com/?some-key=somevalue
+$ url-parser --part=query https://somedomain.com/?some-key=somevalue
 some-key=somevalue
 
-$ url-parser -query -query-field=some-key https://somedomain.com/?some-key=somevalue
+$ url-parser --part=query --query-field=some-key https://somedomain.com/?some-key=somevalue
 somevalue
 ```
 
@@ -43,25 +43,18 @@ https://github.com/herloct/url-parser/releases/download/1.0.0-beta2/url-parser-W
 
 ```bash
 $ url-parser --help
-Usage of url-parser:
-        url-parser [flags] some_url
-Flags:
-  -hostname
-        show the hostname part
-  -password
-        show the password part
-  -path
-        show the raw path part
-  -path-index uint
-        filter parsed path by index
-  -port
-        show the port part
-  -query
-        show the raw query string part
-  -query-field string
-        filter parsed query by field name
-  -scheme
-        show the scheme part
-  -user
-        show the user part
+url-parser
+  Parse URL and shows the part of it.
+
+Usage:
+  url-parser --part=PART <url>
+  url-parser --part=path [--path-index=INDEX] <url>
+  url-parser --part=query [--query-field=FIELD] <url>
+
+Options:
+  --part=PART          Part of URL to show [default: all].
+                       Valid values: all, scheme, user, password,
+                       hostname, port, path, or query.
+  --path-index=INDEX   Filter parsed path by index.
+  --query-field=FIELD  Filter parsed query string by field name.
 ```

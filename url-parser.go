@@ -9,35 +9,24 @@ import (
 	"strings"
 )
 
-const (
-	ALL_PART uint = iota
-	SCHEME_PART
-	USER_PART
-	PASSWORD_PART
-	HOSTNAME_PART
-	PORT_PART
-	PATH_PART
-	QUERY_PART
-)
-
-func parse(urlString string, part uint, pathIndex uint, queryField string) string {
-	result := ""
+func parse(urlString string, part string, index int, field string) (string, error) {
+	var result string
 
 	url, err := url.Parse(urlString)
 	if err != nil {
-		panic(err)
+		return result, err
 	}
 
 	switch part {
-	case SCHEME_PART:
+	case "scheme":
 		result = url.Scheme
 
-	case USER_PART:
+	case "user":
 		if url.User != nil {
 			result = url.User.Username()
 		}
 
-	case PASSWORD_PART:
+	case "password":
 		if url.User == nil {
 			break
 		}
@@ -47,99 +36,69 @@ func parse(urlString string, part uint, pathIndex uint, queryField string) strin
 			result = pass
 		}
 
-	case HOSTNAME_PART:
+	case "hostname":
 		result = url.Hostname()
 
-	case PORT_PART:
+	case "port":
 		result = url.Port()
 
-	case PATH_PART:
+	case "path":
 		result = url.Path
-		if pathIndex > 0 {
+		if index > -1 {
 			paths := strings.Split(result, "/")
-			result = paths[pathIndex]
+			result = paths[index+1]
 		}
 
-	case QUERY_PART:
+	case "query":
 		result = url.RawQuery
-		if queryField != "" && result != "" {
-			result = url.Query().Get(queryField)
+		if field != "" && result != "" {
+			result = url.Query().Get(field)
 		}
+
+	case "all":
+		result = urlString
 
 	default:
-		result = url.String()
+		err = errors.New("Please provides valid part name")
 	}
 
-	return result
+	return result, err
 }
 
 func usage() {
 	appName := "url-parser"
-	fmt.Fprintf(os.Stderr, "Usage of %s:\n", appName)
-	fmt.Fprintf(os.Stderr, "\t%s [flags] some_url\n", appName)
-	fmt.Fprintf(os.Stderr, "Flags:\n")
-	flag.PrintDefaults()
+	fmt.Fprintf(os.Stderr, "%s\n", appName)
+	fmt.Fprintf(os.Stderr, "  Parse URL and shows the part of it.\n\n")
+	fmt.Fprintln(os.Stderr, "Usage:")
+	fmt.Fprintf(os.Stderr, "  %s --part=PART <url>\n", appName)
+	fmt.Fprintf(os.Stderr, "  %s --part=path [--path-index=INDEX] <url>\n", appName)
+	fmt.Fprintf(os.Stderr, "  %s --part=query [--query-field=FIELD] <url>\n\n", appName)
+	fmt.Fprintln(os.Stderr, "Options:")
+	fmt.Fprintln(os.Stderr, "  --part=PART          Part of URL to show [default: all].")
+	fmt.Fprintln(os.Stderr, "                       Valid values: all, scheme, user, password,")
+	fmt.Fprintln(os.Stderr, "                       hostname, port, path, or query.")
+	fmt.Fprintln(os.Stderr, "  --path-index=INDEX   Filter parsed path by index.")
+	fmt.Fprintln(os.Stderr, "  --query-field=FIELD  Filter parsed query string by field name.")
 }
 
 func main() {
 	flag.Usage = usage
 
-	schemePtr := flag.Bool("scheme", false, "show the scheme part")
-	userPtr := flag.Bool("user", false, "show the user part")
-	passwordPtr := flag.Bool("password", false, "show the password part")
-	hostnamePtr := flag.Bool("hostname", false, "show the hostname part")
-	portPtr := flag.Bool("port", false, "show the port part")
-	pathPtr := flag.Bool("path", false, "show the raw path part")
-	queryPtr := flag.Bool("query", false, "show the raw query string part")
-
-	pathIndexPtr := flag.Uint("path-index", 0, "filter parsed path by index")
-	queryFieldPtr := flag.String("query-field", "", "filter parsed query by field name")
+	partPtr := flag.String("part", "all", "Part of URL to show")
+	indexPtr := flag.Int("path-index", -1, "Filter parsed path by index")
+	fieldPtr := flag.String("query-field", "", "Filter parsed query string by field name")
 
 	flag.Parse()
 
 	if len(flag.Args()) < 1 {
-		err := errors.New("Please provide an URL to parse")
-		panic(err)
+		panic(errors.New("Please provides URL to parse"))
 	}
 	urlString := flag.Args()[0]
-	part := ALL_PART
-	pathIndex := uint(0)
-	queryField := ""
 
-	switch {
-	case *schemePtr:
-		part = SCHEME_PART
-
-	case *userPtr:
-		part = USER_PART
-
-	case *passwordPtr:
-		part = PASSWORD_PART
-
-	case *hostnamePtr:
-		part = HOSTNAME_PART
-
-	case *portPtr:
-		part = PORT_PART
-
-	case *pathPtr:
-		part = PATH_PART
-		fallthrough
-
-	case *pathPtr && *pathIndexPtr > 0:
-		pathIndex = *pathIndexPtr + 1
-
-	case *queryPtr:
-		part = QUERY_PART
-		fallthrough
-
-	case *queryPtr && *queryFieldPtr != "":
-		queryField = *queryFieldPtr
-
-	default:
-		part = ALL_PART
+	result, err := parse(urlString, *partPtr, *indexPtr, *fieldPtr)
+	if err != nil {
+		panic(err)
 	}
 
-	result := parse(urlString, part, pathIndex, queryField)
 	fmt.Println(result)
 }

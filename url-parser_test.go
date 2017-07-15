@@ -5,16 +5,11 @@ import (
 )
 
 type TestParseData struct {
-	urlString  string
-	part       uint
-	pathIndex  uint
-	queryField string
-	expected   string
-}
-
-func (d *TestParseData) init() {
-	d.pathIndex = 0
-	d.queryField = ""
+	urlString string
+	part      string
+	index     int
+	field     string
+	expected  string
 }
 
 func TestParse(t *testing.T) {
@@ -23,120 +18,128 @@ func TestParse(t *testing.T) {
 	testDatas := []TestParseData{
 		TestParseData{
 			urlString: urlString,
-			part:      ALL_PART,
+			part:      "all",
 			expected:  urlString,
 		},
 		TestParseData{
 			urlString: urlString,
-			part:      SCHEME_PART,
+			part:      "scheme",
 			expected:  "postgres",
 		},
 
 		TestParseData{
 			urlString: urlString,
-			part:      USER_PART,
+			part:      "user",
 			expected:  "user",
 		},
 		TestParseData{
 			urlString: "postgres://host.com",
-			part:      USER_PART,
+			part:      "user",
 			expected:  "",
 		},
 
 		TestParseData{
 			urlString: urlString,
-			part:      PASSWORD_PART,
+			part:      "password",
 			expected:  "pass",
 		},
 		TestParseData{
 			urlString: "postgres://host.com",
-			part:      PASSWORD_PART,
+			part:      "password",
 			expected:  "",
 		},
 		TestParseData{
 			urlString: "postgres://user@host.com",
-			part:      PASSWORD_PART,
+			part:      "password",
 			expected:  "",
 		},
 		TestParseData{
 			urlString: "postgres://user:my password@host.com",
-			part:      PASSWORD_PART,
+			part:      "password",
 			expected:  "my password",
 		},
 
 		TestParseData{
 			urlString: urlString,
-			part:      HOSTNAME_PART,
+			part:      "hostname",
 			expected:  "host.com",
 		},
 
 		TestParseData{
 			urlString: urlString,
-			part:      PORT_PART,
+			part:      "port",
 			expected:  "5432",
 		},
 		TestParseData{
 			urlString: "postgres://host.com",
-			part:      PORT_PART,
+			part:      "port",
 			expected:  "",
 		},
 
 		TestParseData{
 			urlString: urlString,
-			part:      PATH_PART,
+			part:      "path",
+			index:     -1,
 			expected:  "/path/to",
 		},
 		TestParseData{
 			urlString: urlString,
-			part:      PATH_PART,
-			pathIndex: 1,
+			part:      "path",
+			index:     0,
 			expected:  "path",
 		},
 		TestParseData{
 			urlString: urlString,
-			part:      PATH_PART,
-			pathIndex: 2,
+			part:      "path",
+			index:     1,
 			expected:  "to",
 		},
 		TestParseData{
 			urlString: "postgres://host.com",
-			part:      PATH_PART,
+			part:      "path",
+			index:     -1,
 			expected:  "",
 		},
 
 		TestParseData{
 			urlString: urlString,
-			part:      QUERY_PART,
+			part:      "query",
 			expected:  "key=value&other=other%20value",
 		},
 		TestParseData{
-			urlString:  urlString,
-			part:       QUERY_PART,
-			queryField: "key",
-			expected:   "value",
+			urlString: urlString,
+			part:      "query",
+			field:     "key",
+			expected:  "value",
 		},
 		TestParseData{
-			urlString:  urlString,
-			part:       QUERY_PART,
-			queryField: "other",
-			expected:   "other value",
+			urlString: urlString,
+			part:      "query",
+			field:     "other",
+			expected:  "other value",
 		},
 		TestParseData{
 			urlString: "postgres://host.com",
-			part:      QUERY_PART,
+			part:      "query",
 			expected:  "",
 		},
 		TestParseData{
-			urlString:  "postgres://host.com",
-			part:       QUERY_PART,
-			queryField: "key",
-			expected:   "",
+			urlString: "postgres://host.com",
+			part:      "query",
+			field:     "key",
+			expected:  "",
 		},
 	}
 
-	result := ""
+	var (
+		result string
+		err    error
+	)
 	for _, testData := range testDatas {
-		result = parse(testData.urlString, testData.part, testData.pathIndex, testData.queryField)
+		result, err = parse(testData.urlString, testData.part, testData.index, testData.field)
+		if err != nil {
+			t.Fatal(err)
+		}
 		if result != testData.expected {
 			t.Fatalf("The part `%v`, should be `%v`", result, testData.expected)
 		}
