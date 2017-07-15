@@ -1,11 +1,14 @@
 ---
 language: go
-go:
-  - 1.8.3
 
-os:
-  - linux
-  - osx
+matrix:
+  include:
+    - os: linux
+      dist: trusty
+      go: 1.8.3
+
+    - os: osx
+      go: 1.8.3
 
 before_install:
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew update;      else sudo apt update -qq;     fi
@@ -16,7 +19,7 @@ script:
   - go build -ldflags '-s -w'
 #  - upx --ultra-brute url-parser
 
-  - ./url-parser --help
+  - ./url-parser --help || echo "Shows the help"
 
   - ./url-parser || echo "This should be failed"
 
