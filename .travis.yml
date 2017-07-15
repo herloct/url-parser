@@ -1,22 +1,24 @@
 ---
-dist: trusty
-
 language: go
 go:
   - 1.8.3
 
+os:
+  - linux
+  - osx
+
 before_install:
-  - sudo apt update -qq
-  - sudo apt install -y upx
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew update;      else sudo apt update -qq;     fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install upx; else sudo apt install -y upx; fi
 
 script:
   - go test -v
-  - GOOS=linux go build -ldflags '-s -w' -o build/url-parser-Linux-x86_64
-  - GOOS=darwin go build -ldflags '-s -w' -o build/url-parser-Darwin-x86_64
-  - GOOS=windows go build -ldflags '-s -w' -o build/url-parser-Windows-x86_64.exe
-  - upx --ultra-brute build/url-parser-Linux-x86_64
-  - upx --ultra-brute build/url-parser-Darwin-x86_64
-  - upx --ultra-brute build/url-parser-Windows-x86_64.exe
+#  - GOOS=linux go build -ldflags '-s -w' -o build/url-parser-Linux-x86_64
+#  - GOOS=darwin go build -ldflags '-s -w' -o build/url-parser-Darwin-x86_64
+#  - GOOS=windows go build -ldflags '-s -w' -o build/url-parser-Windows-x86_64.exe
+#  - upx --ultra-brute build/url-parser-Linux-x86_64
+#  - upx --ultra-brute build/url-parser-Darwin-x86_64
+#  - upx --ultra-brute build/url-parser-Windows-x86_64.exe
 
 deploy:
   provider: releases
