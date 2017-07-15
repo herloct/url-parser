@@ -15,6 +15,30 @@ script:
   - go test -v
   - go build -ldflags '-s -w'
   - upx --ultra-brute url-parser
+
+  - ./url-parser || echo "This should be failed"
+
+  - [[ $(./url-parser "https://google.com") == "https://google.com" ]]
+  - [[ $(./url-parser --part=all "https://google.com") == "https://google.com" ]]
+  - [[ $(./url-parser --part=scheme "https://google.com") == "https" ]]
+
+  - [[ $(./url-parser --part=user "https://google.com") == "" ]]
+  - [[ $(./url-parser --part=user "https://username@google.com") == "username" ]]
+
+  - [[ $(./url-parser --part=password "https://google.com") == "" ]]
+  - [[ $(./url-parser --part=password "https://username@google.com") == "" ]]
+  - [[ $(./url-parser --part=password "https://username:mypassword@google.com") == "mypassword" ]]
+
+  - [[ $(./url-parser --part=hostname "https://google.com") == "google.com" ]]
+
+  - [[ $(./url-parser --part=port "https://google.com") == "" ]]
+  - [[ $(./url-parser --part=port "https://google.com:123") == "123" ]]
+
+  - [[ $(./url-parser --part=path "https://google.com") == "" ]]
+  - [[ $(./url-parser --part=path "https://google.com/path/to") == "/path/to" ]]
+  - [[ $(./url-parser --part=path --path-index=0 "https://google.com/path/to") == "path" ]]
+  - [[ $(./url-parser --part=path --path-index=1 "https://google.com/path/to") == "to" ]]
+
   - mv url-parser url-parser-`uname -s`-x86_64
   - ls -la
 
