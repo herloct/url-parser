@@ -14,7 +14,7 @@ before_install:
 script:
   - go test -v
   - go build -ldflags '-s -w'
-  - upx --ultra-brute url-parser
+#  - upx --ultra-brute url-parser
 
   - ./url-parser --help
 
