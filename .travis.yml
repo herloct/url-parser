@@ -10,14 +10,9 @@ matrix:
     - os: osx
       go: 1.8.3
 
-before_install:
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew update;      else sudo apt update -qq;     fi
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install upx; else sudo apt install -y upx; fi
-
 script:
   - go test -v
   - go build -ldflags '-s -w'
-  - upx --brute url-parser
 
   - ./url-parser --help || echo "Shows the help"
 
@@ -54,7 +49,5 @@ deploy:
   on:
     tags: true
   api_key: $GITHUB_OAUTH_TOKEN
-  file:
-    - build/url-parser-Linux-x86_64
-    - build/url-parser-Darwin-x86_64
-    - build/url-parser-Windows-x86_64.exe
+  file_glob: true
+  file: url-parser-*-x86_64
