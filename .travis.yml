@@ -17,7 +17,7 @@ before_install:
 script:
   - go test -v
   - go build -ldflags '-s -w'
-#  - upx --ultra-brute url-parser
+  - upx --ultra-brute url-parser
 
   - ./url-parser --help || echo "Shows the help"
 
@@ -46,13 +46,6 @@ script:
 
   - mv url-parser url-parser-`uname -s`-x86_64
   - ls -la
-
-#  - GOOS=linux go build -ldflags '-s -w' -o build/url-parser-Linux-x86_64
-#  - GOOS=darwin go build -ldflags '-s -w' -o build/url-parser-Darwin-x86_64
-#  - GOOS=windows go build -ldflags '-s -w' -o build/url-parser-Windows-x86_64.exe
-#  - upx --ultra-brute build/url-parser-Linux-x86_64
-#  - upx --ultra-brute build/url-parser-Darwin-x86_64
-#  - upx --ultra-brute build/url-parser-Windows-x86_64.exe
 
 deploy:
   provider: releases
