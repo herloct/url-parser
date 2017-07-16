@@ -1,4 +1,4 @@
-# url-parser [![Build Status](https://travis-ci.org/herloct/url-parser.svg?branch=master)](https://travis-ci.org/herloct/url-parser)
+# url-parser [![Build Status](https://travis-ci.org/herloct/url-parser.svg?branch=master)](https://travis-ci.org/herloct/url-parser) [![Build status](https://ci.appveyor.com/api/projects/status/x8ct5ewh1bi5l2og/branch/master?svg=true)](https://ci.appveyor.com/project/herloct/url-parser/branch/master)
 
 Inspired by [urlp](https://github.com/clayallsopp/urlp), a simple command-line utility for parsing URLs.
 
