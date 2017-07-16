@@ -10,4 +10,6 @@ build_script:
   - go build
 
 test_script:
-  - url-parser --help
+  - ps: |
+      url-parser --help
+      if ($LastExitCode -eq 2) { $host.SetShouldExit(0) } else { $host.SetShouldExit($LastExitCode) }
