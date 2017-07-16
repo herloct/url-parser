@@ -29,14 +29,14 @@ somevalue
 url-parser is available for Linux and OS X, 64-bit only for now:
 
 ```curl
-curl -L https://github.com/herloct/url-parser/releases/download/1.0.0-beta2/url-parser-`uname -s`-x86_64 > /usr/local/bin/url-parser; chmod +x /usr/local/bin/url-parser
+curl -L https://github.com/herloct/url-parser/releases/download/1.0.0-beta3/url-parser-`uname -s`-x86_64 > /usr/local/bin/url-parser; chmod +x /usr/local/bin/url-parser
 
 ```
 
 For Windows, you could download them here:
 
 ```curl
-https://github.com/herloct/url-parser/releases/download/1.0.0-beta2/url-parser-Windows-x86_64.exe
+https://github.com/herloct/url-parser/releases/download/1.0.0-beta3/url-parser-Windows-x86_64.exe
 ```
 
 ## Usage
