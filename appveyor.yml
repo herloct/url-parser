@@ -48,4 +48,4 @@ test_script:
   - build\url-parser.exe --part=fragment "https://google.com/#some"
 
 after_test:
-  - ren build\url-parser.exe build\url-parser-Windows-x86_64.exe
+  - rename build\url-parser.exe build\url-parser-Windows-x86_64.exe
