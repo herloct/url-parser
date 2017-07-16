@@ -10,4 +10,4 @@ build_script:
   - go build -o build\url-parser.exe
 
 test_script:
-  - C:\cygwin\bin\bash -lc "build/url-parser.exe --help || echo \"Shows the help\""
+  - bash -lc "build/url-parser.exe --help || echo \"Shows the help\""
