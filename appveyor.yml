@@ -20,3 +20,29 @@ test_script:
   - build\url-parser.exe "https://google.com"
   - build\url-parser.exe --part=all "https://google.com"
   - build\url-parser.exe --part=scheme "https://google.com"
+
+  - build\url-parser.exe --part=user "https://google.com"
+  - build\url-parser.exe --part=user "https://username@google.com"
+
+  - build\url-parser.exe --part=password "https://google.com"
+  - build\url-parser.exe --part=password "https://username@google.com"
+  - build\url-parser.exe --part=password "https://username:mypassword@google.com"
+
+  - build\url-parser.exe --part=hostname "https://google.com"
+
+  - build\url-parser.exe --part=port "https://google.com"
+  - build\url-parser.exe --part=port "https://google.com:123"
+
+  - build\url-parser.exe --part=path "https://google.com"
+  - build\url-parser.exe --part=path "https://google.com/path/to"
+  - build\url-parser.exe --part=path --path-index=0 "https://google.com/path/to"
+  - build\url-parser.exe --part=path --path-index=1 "https://google.com/path/to"
+
+  - build\url-parser.exe --part=query "https://google.com"
+  - build\url-parser.exe --part=query "https://google.com/?some-key=value&other-key=other"
+  - build\url-parser.exe --part=query --query-field=some-key "https://google.com/?some-key=value&other-key=other"
+  - build\url-parser.exe --part=query --query-field=other-key "https://google.com/?some-key=value&other-key=other"
+  - build\url-parser.exe --part=query --query-field=unknown "https://google.com/?some-key=value&other-key=other"
+
+  - build\url-parser.exe --part=fragment "https://google.com"
+  - build\url-parser.exe --part=fragment "https://google.com/#some"
