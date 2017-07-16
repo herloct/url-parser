@@ -1,0 +1,13 @@
+version: '1.0.0-beta3.{build}'
+
+clone_folder: c:/go/src/github.com/herloct/url-parser
+
+before_build:
+  - go env
+  - go test -v
+
+build_script:
+  - go build -ldflags '-s -w'
+
+test_script:
+  - url-parser --help
