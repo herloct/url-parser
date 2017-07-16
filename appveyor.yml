@@ -7,13 +7,7 @@ before_build:
   - go test -v
 
 build_script:
-  - go build -o url-parser.exe
+  - go build -o build/url-parser.exe
 
 test_script:
-  - ps: |
-      url-parser.exe --help
-      if ($LastExitCode -ne 2)
-      {
-        "This should print the usage info"
-        $host.SetShouldExit($LastExitCode)
-      }
+  - build/url-parser.exe --help
