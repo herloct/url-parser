@@ -2,6 +2,10 @@ version: '1.0.0-beta3.{build}'
 
 clone_folder: C:\Users\appveyor\go\src\github.com\herloct\url-parser
 
+artifacts:
+  - path: build
+    name: binary
+
 before_build:
   - go env
   - go test -v
