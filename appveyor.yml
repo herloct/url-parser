@@ -1,0 +1,67 @@
+version: '1.0.0-beta3.{build}'
+
+clone_folder: C:\Users\appveyor\go\src\github.com\herloct\url-parser
+
+artifacts:
+  - path: build\url-parser-Windows-x86_64.exe
+    name: binary
+
+before_build:
+  - go version
+  - go env
+  - go test -v
+
+build_script:
+  - go build -o build\url-parser.exe
+
+test_script:
+  - bash -lc "build/url-parser.exe --help || echo \"Shows the help\""
+  - bash -lc "build/url-parser.exe || echo \"This should be failed\""
+
+  - bash -lc '[[ $(build/url-parser.exe "https://google.com") == "https://google.com" ]]'
+  - bash -lc '[[ $(build/url-parser.exe --part=all "https://google.com") == "https://google.com" ]]'
+  - bash -lc '[[ $(build/url-parser.exe --part=scheme "https://google.com") == "https" ]]'
+
+  - bash -lc '[[ $(build/url-parser.exe --part=user "https://google.com") == "" ]]'
+  - bash -lc '[[ $(build/url-parser.exe --part=user "https://username@google.com") == "username" ]]'
+
+  - bash -lc '[[ $(build/url-parser.exe --part=password "https://google.com") == "" ]]'
+  - bash -lc '[[ $(build/url-parser.exe --part=password "https://username@google.com") == "" ]]'
+  - bash -lc '[[ $(build/url-parser.exe --part=password "https://username:mypassword@google.com") == "mypassword" ]]'
+
+  - bash -lc '[[ $(build/url-parser.exe --part=hostname "https://google.com") == "google.com" ]]'
+
+  - bash -lc '[[ $(build/url-parser.exe --part=port "https://google.com") == "" ]]'
+  - bash -lc '[[ $(build/url-parser.exe --part=port "https://google.com:123") == "123" ]]'
+
+  - bash -lc '[[ $(build/url-parser.exe --part=path "https://google.com") == "" ]]'
+  - bash -lc '[[ $(build/url-parser.exe --part=path "https://google.com/path/to") == "/path/to" ]]'
+  - bash -lc '[[ $(build/url-parser.exe --part=path --path-index=0 "https://google.com/path/to") == "path" ]]'
+  - bash -lc '[[ $(build/url-parser.exe --part=path --path-index=1 "https://google.com/path/to") == "to" ]]'
+
+  - bash -lc '[[ $(build/url-parser.exe --part=query "https://google.com") == "" ]]'
+  - bash -lc '[[ $(build/url-parser.exe --part=query "https://google.com/?some-key=value&other-key=other") == "some-key=value&other-key=other" ]]'
+  - bash -lc '[[ $(build/url-parser.exe --part=query --query-field=some-key "https://google.com/?some-key=value&other-key=other") == "value" ]]'
+  - bash -lc '[[ $(build/url-parser.exe --part=query --query-field=other-key "https://google.com/?some-key=value&other-key=other") == "other" ]]'
+  - bash -lc '[[ $(build/url-parser.exe --part=query --query-field=unknown "https://google.com/?some-key=value&other-key=other") == "" ]]'
+
+  - bash -lc '[[ $(build/url-parser.exe --part=fragment "https://google.com") == "" ]]'
+  - bash -lc '[[ $(build/url-parser.exe --part=fragment "https://google.com/#some") == "some" ]]'
+
+after_test:
+  - copy "build\url-parser.exe" "build\url-parser-Windows-x86_64.exe"
+
+deploy:
+  tag: $(appveyor_repo_tag_name)
+  description: |
+    * Use `--part=PART` instead of `--scheme`, `--user`, etc, so they're easier to tests.
+    * Tests the compiled binary on it's own environment (linux, mac, windows).
+    * Temporarily disable UPX compression, because it throws segfault on TravisCI.
+  provider: GitHub
+  auth_token:
+    secure: Z2BZL6xX7hIQqvyEU9Acaf9xGc84LwvaRoJdLk+tSmHkJcyxA8MgHKNHvbbx48IH
+  artifact: binary
+  prerelease: true
+  force_update: true
+  on:
+    appveyor_repo_tag: true
