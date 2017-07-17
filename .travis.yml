@@ -35,14 +35,14 @@ before_install:
     curl -L https://github.com/upx/upx/releases/download/v3.94/upx-3.94-amd64_linux.tar.xz > upx.tar.xz;
     tar -xf upx.tar.xz;
     chmod +x upx-3.94-amd64_linux/upx;
-    mv upx-3.94-amd64_linux/upx upx;
+    sudo mv upx-3.94-amd64_linux/upx /usr/local/bin/upx;
     rm -rf upx-3.94-amd64_linux upx.tar.xz;
     fi
 
 script:
   - go test -v
   - go build -ldflags '-s -w'
-  - ./upx url-parser
+  - upx url-parser
 
   - ./url-parser --help || echo "Shows the help"
 
