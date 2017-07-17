@@ -80,4 +80,3 @@ script:
 
 after_success:
   - mv url-parser url-parser-`uname -s`-x86_64
-  - ls -la
