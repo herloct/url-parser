@@ -7,6 +7,7 @@ artifacts:
     name: binary
 
 before_build:
+  - go version
   - go env
   - go test -v
 
