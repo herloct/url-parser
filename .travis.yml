@@ -32,7 +32,7 @@ before_install:
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew update; brew install upx; fi
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
     curl -L https://github.com/upx/upx/releases/download/v3.94/upx-3.94-amd64_linux.tar.xz > upx.tar.xz;
-    untar -Jxvf upx.tar.xz;
+    tar xf upx.tar.xz;
     chmod +x upx;
     fi
 
