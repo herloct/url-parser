@@ -50,3 +50,20 @@ test_script:
 
 after_test:
   - copy "build\url-parser.exe" "build\url-parser-Windows-x86_64.exe"
+
+deploy:
+  tag: $(appveyor_repo_tag_name)
+  description: >
+    * Use `--part=PART` instead of `--scheme`, `--user`, etc, so they're easier to tests.
+    * Tests the compiled binary on it's own environment.
+      Use TravisCI to test on linux and mac's environment,
+      and Appveyor for windows environment.
+    * Temporarily disable UPX compression, because it throws segfault on TravisCI.
+  provider: GitHub
+  auth_token:
+    secure: Z2BZL6xX7hIQqvyEU9Acaf9xGc84LwvaRoJdLk+tSmHkJcyxA8MgHKNHvbbx48IH
+  artifact: binary
+  prerelease: true
+  force_update: true
+  on:
+    appveyor_repo_tag: true
