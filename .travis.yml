@@ -48,6 +48,7 @@ script:
   - '[[ $(./url-parser --part=fragment "https://google.com") == "" ]]'
   - '[[ $(./url-parser --part=fragment "https://google.com/#some") == "some" ]]'
 
+after_success:
   - mv url-parser url-parser-`uname -s`-x86_64
   - ls -la
 
