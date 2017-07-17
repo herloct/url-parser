@@ -34,10 +34,9 @@ before_install:
     sudo apt install xz-utils;
     curl -L https://github.com/upx/upx/releases/download/v3.94/upx-3.94-amd64_linux.tar.xz > upx.tar.xz;
     tar -xf upx.tar.xz;
-    ls -la;
     chmod +x upx-3.94-amd64_linux/upx;
     mv upx-3.94-amd64_linux/upx upx;
-    rm -rf upx-3.94-amd64_linux;
+    rm -rf upx-3.94-amd64_linux upx.tar.xz;
     fi
 
 script:
