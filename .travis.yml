@@ -28,9 +28,21 @@ matrix:
         file_glob: true
         file: url-parser-*-x86_64
 
+before_install:
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew update; brew install upx; fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
+    sudo apt install xz-utils;
+    curl -L https://github.com/upx/upx/releases/download/v3.94/upx-3.94-amd64_linux.tar.xz > upx.tar.xz;
+    tar -xf upx.tar.xz;
+    chmod +x upx-3.94-amd64_linux/upx;
+    sudo mv upx-3.94-amd64_linux/upx /usr/local/bin/upx;
+    rm -rf upx-3.94-amd64_linux upx.tar.xz;
+    fi
+
 script:
   - go test -v
   - go build -ldflags '-s -w'
+  - upx url-parser
 
   - ./url-parser --help || echo "Shows the help"
 
@@ -68,4 +80,3 @@ script:
 
 after_success:
   - mv url-parser url-parser-`uname -s`-x86_64
-  - ls -la

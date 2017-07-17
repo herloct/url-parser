@@ -1,10 +1,15 @@
 version: '1.0.0-beta3.{build}'
 
+platform: x64
+
 clone_folder: C:\Users\appveyor\go\src\github.com\herloct\url-parser
 
 artifacts:
   - path: build\url-parser-Windows-x86_64.exe
     name: binary
+
+install:
+  - cinst upx
 
 before_build:
   - go version
@@ -13,6 +18,7 @@ before_build:
 
 build_script:
   - go build -o build\url-parser.exe
+  - upx build\url-parser.exe
 
 test_script:
   - bash -lc "build/url-parser.exe --help || echo \"Shows the help\""
@@ -54,10 +60,7 @@ after_test:
 deploy:
   tag: $(appveyor_repo_tag_name)
   description: |
-    * Use `--part=PART` instead of `--scheme`, `--user`, etc, so they're easier to tests.
-    * Tests the compiled binary on it's own environment (linux, mac, windows).
-    * Temporarily disable UPX compression, because it throws segfault on TravisCI.
-    * Temporarily disable stripped compilation, because it throws error on AppVeyor.
+    * Re enable UPX so we could get far smaller binary size.
   provider: GitHub
   auth_token:
     secure: Z2BZL6xX7hIQqvyEU9Acaf9xGc84LwvaRoJdLk+tSmHkJcyxA8MgHKNHvbbx48IH
