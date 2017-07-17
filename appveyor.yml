@@ -60,10 +60,7 @@ after_test:
 deploy:
   tag: $(appveyor_repo_tag_name)
   description: |
-    * Use `--part=PART` instead of `--scheme`, `--user`, etc, so they're easier to tests.
-    * Tests the compiled binary on it's own environment (linux, mac, windows).
-    * Temporarily disable UPX compression, because it throws segfault on TravisCI.
-    * Temporarily disable stripped compilation, because it throws error on AppVeyor.
+    * Re enable UPX so we could get far smaller binary size.
   provider: GitHub
   auth_token:
     secure: Z2BZL6xX7hIQqvyEU9Acaf9xGc84LwvaRoJdLk+tSmHkJcyxA8MgHKNHvbbx48IH
