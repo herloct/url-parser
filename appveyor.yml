@@ -1,5 +1,7 @@
 version: '1.0.0-beta3.{build}'
 
+platform: x64
+
 clone_folder: C:\Users\appveyor\go\src\github.com\herloct\url-parser
 
 artifacts:
