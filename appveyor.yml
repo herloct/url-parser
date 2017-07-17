@@ -6,6 +6,9 @@ artifacts:
   - path: build\url-parser-Windows-x86_64.exe
     name: binary
 
+install:
+  - cinst upx
+
 before_build:
   - go version
   - go env
@@ -13,6 +16,7 @@ before_build:
 
 build_script:
   - go build -o build\url-parser.exe
+  - upx build\url-parser.exe
 
 test_script:
   - bash -lc "build/url-parser.exe --help || echo \"Shows the help\""
