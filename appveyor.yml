@@ -17,35 +17,35 @@ test_script:
   - bash -lc "build/url-parser.exe --help || echo \"Shows the help\""
   - bash -lc "build/url-parser.exe || echo \"This should be failed\""
 
-  - build\url-parser.exe "https://google.com"
-  - build\url-parser.exe --part=all "https://google.com"
-  - build\url-parser.exe --part=scheme "https://google.com"
+  - bash -lc '[[ $(build/url-parser.exe "https://google.com") == "https://google.com" ]]'
+  - bash -lc '[[ $(build/url-parser.exe --part=all "https://google.com") == "https://google.com" ]]'
+  - bash -lc '[[ $(build/url-parser.exe --part=scheme "https://google.com") == "https" ]]'
 
-  - build\url-parser.exe --part=user "https://google.com"
-  - build\url-parser.exe --part=user "https://username@google.com"
+  - bash -lc '[[ $(build/url-parser.exe --part=user "https://google.com") == "" ]]'
+  - bash -lc '[[ $(build/url-parser.exe --part=user "https://username@google.com") == "username" ]]'
 
-  - build\url-parser.exe --part=password "https://google.com"
-  - build\url-parser.exe --part=password "https://username@google.com"
-  - build\url-parser.exe --part=password "https://username:mypassword@google.com"
+  - bash -lc '[[ $(build/url-parser.exe --part=password "https://google.com") == "" ]]'
+  - bash -lc '[[ $(build/url-parser.exe --part=password "https://username@google.com") == "" ]]'
+  - bash -lc '[[ $(build/url-parser.exe --part=password "https://username:mypassword@google.com") == "mypassword" ]]'
 
-  - build\url-parser.exe --part=hostname "https://google.com"
+  - bash -lc '[[ $(build/url-parser.exe --part=hostname "https://google.com") == "google.com" ]]'
 
-  - build\url-parser.exe --part=port "https://google.com"
-  - build\url-parser.exe --part=port "https://google.com:123"
+  - bash -lc '[[ $(build/url-parser.exe --part=port "https://google.com") == "" ]]'
+  - bash -lc '[[ $(build/url-parser.exe --part=port "https://google.com:123") == "123" ]]'
 
-  - build\url-parser.exe --part=path "https://google.com"
-  - build\url-parser.exe --part=path "https://google.com/path/to"
-  - build\url-parser.exe --part=path --path-index=0 "https://google.com/path/to"
-  - build\url-parser.exe --part=path --path-index=1 "https://google.com/path/to"
+  - bash -lc '[[ $(build/url-parser.exe --part=path "https://google.com") == "" ]]'
+  - bash -lc '[[ $(build/url-parser.exe --part=path "https://google.com/path/to") == "/path/to" ]]'
+  - bash -lc '[[ $(build/url-parser.exe --part=path --path-index=0 "https://google.com/path/to") == "path" ]]'
+  - bash -lc '[[ $(build/url-parser.exe --part=path --path-index=1 "https://google.com/path/to") == "to" ]]'
 
-  - build\url-parser.exe --part=query "https://google.com"
-  - build\url-parser.exe --part=query "https://google.com/?some-key=value&other-key=other"
-  - build\url-parser.exe --part=query --query-field=some-key "https://google.com/?some-key=value&other-key=other"
-  - build\url-parser.exe --part=query --query-field=other-key "https://google.com/?some-key=value&other-key=other"
-  - build\url-parser.exe --part=query --query-field=unknown "https://google.com/?some-key=value&other-key=other"
+  - bash -lc '[[ $(build/url-parser.exe --part=query "https://google.com") == "" ]]'
+  - bash -lc '[[ $(build/url-parser.exe --part=query "https://google.com/?some-key=value&other-key=other") == "some-key=value&other-key=other" ]]'
+  - bash -lc '[[ $(build/url-parser.exe --part=query --query-field=some-key "https://google.com/?some-key=value&other-key=other") == "value" ]]'
+  - bash -lc '[[ $(build/url-parser.exe --part=query --query-field=other-key "https://google.com/?some-key=value&other-key=other") == "other" ]]'
+  - bash -lc '[[ $(build/url-parser.exe --part=query --query-field=unknown "https://google.com/?some-key=value&other-key=other") == "" ]]'
 
-  - build\url-parser.exe --part=fragment "https://google.com"
-  - build\url-parser.exe --part=fragment "https://google.com/#some"
+  - bash -lc '[[ $(build/url-parser.exe --part=fragment "https://google.com") == "" ]]'
+  - bash -lc '[[ $(build/url-parser.exe --part=fragment "https://google.com/#some") == "some" ]]'
 
 after_test:
   - copy "build\url-parser.exe" "build\url-parser-Windows-x86_64.exe"
