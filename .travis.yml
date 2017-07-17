@@ -33,6 +33,7 @@ before_install:
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
     curl -L https://github.com/upx/upx/releases/download/v3.94/upx-3.94-amd64_linux.tar.xz > upx.tar.xz;
     tar xf upx.tar.xz;
+    ls -la;
     chmod +x upx;
     fi
 
