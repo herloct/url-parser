@@ -53,11 +53,9 @@ after_test:
 
 deploy:
   tag: $(appveyor_repo_tag_name)
-  description: >
+  description: |
     * Use `--part=PART` instead of `--scheme`, `--user`, etc, so they're easier to tests.
-    * Tests the compiled binary on it's own environment.
-      Use TravisCI to test on linux and mac's environment,
-      and Appveyor for windows environment.
+    * Tests the compiled binary on it's own environment (linux, mac, windows).
     * Temporarily disable UPX compression, because it throws segfault on TravisCI.
   provider: GitHub
   auth_token:
